@@ -13,7 +13,10 @@ public class HealthController {
     public Map<String, Object> health() {
         return Map.of(
                 "status", "UP",
-                "timestamp", Instant.now().toString()
+                "timestamp", Instant.now().toString(),
+                "message", "Service is running",
+                "version", "1.0.1"
+                
         );
     }
 }
