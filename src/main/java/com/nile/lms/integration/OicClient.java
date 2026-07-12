@@ -39,7 +39,12 @@ public class OicClient {
             throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "OIC_ERROR",
                     "Registration failed, please try again");
         } catch (Exception ex) {
-            System.err.println("OIC call failed unexpectedly: " + ex.getMessage());
+            Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+            System.err.println("OIC call failed unexpectedly: " + ex.getClass().getName() + " - " + ex.getMessage());
+            System.err.println("Root cause: " + cause.getClass().getName() + " - " + cause.getMessage());
+            if (cause instanceof WebClientResponseException wcre) {
+                System.err.println("Status: " + wcre.getStatusCode() + " Body: " + wcre.getResponseBodyAsString());
+            }
             throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "OIC_ERROR",
                     "Registration failed, please try again");
         }
