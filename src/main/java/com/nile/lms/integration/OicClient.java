@@ -34,8 +34,14 @@ public class OicClient {
                     .block();
         } catch (WebClientResponseException.Conflict ex) {
             throw new ApiException(HttpStatus.CONFLICT, "EMAIL_EXISTS", "Email already registered");
+        } catch (WebClientResponseException ex) {
+            System.err.println("OIC call failed: " + ex.getStatusCode() + " - " + ex.getResponseBodyAsString());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "OIC_ERROR",
+                    "Registration failed, please try again");
         } catch (Exception ex) {
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "OIC_ERROR", "Registration failed, please try again");
+            System.err.println("OIC call failed unexpectedly: " + ex.getMessage());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "OIC_ERROR",
+                    "Registration failed, please try again");
         }
     }
 }
