@@ -1,0 +1,15 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          oic:
+            client-id: ${OIC_CLIENT_ID}
+            client-secret: ${OIC_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+        provider:
+          oic:
+            token-uri: ${OIC_TOKEN_ENDPOINT}
+
+oic:
+  register-url: ${OIC_REGISTER_URL}
