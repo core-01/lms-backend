@@ -7,6 +7,7 @@ spring:
             client-id: ${OIC_CLIENT_ID}
             client-secret: ${OIC_CLIENT_SECRET}
             authorization-grant-type: client_credentials
+            scope: urn:opc:idm:__myscopes__
         provider:
           oic:
             token-uri: ${OIC_TOKEN_ENDPOINT}
