@@ -31,7 +31,7 @@ public class OicClient {
             return oicWebClient.post()
                     .uri(oicProperties.getRegisterUrl())
                     .attributes(ServletOAuth2AuthorizedClientExchangeFilterFunction
-                            .clientRegistrationId("oic")) // 🔥 THIS triggers token automatically
+                            .clientRegistrationId("oic")) // ✅ OAuth handled automatically
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(request)
                     .retrieve()
@@ -43,13 +43,22 @@ public class OicClient {
             throw new ApiException(HttpStatus.CONFLICT, "EMAIL_EXISTS", "Email already registered");
 
         } catch (WebClientResponseException ex) {
-            System.err.println("OIC ERROR: " + ex.getStatusCode() + " - " + ex.getResponseBodyAsString());
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "OIC_ERROR",
-                    "Registration failed");
+            // 🔥 THIS IS THE MOST IMPORTANT FIX
+            System.err.println("=== OIC FAILURE ===");
+            System.err.println("STATUS: " + ex.getStatusCode());
+            System.err.println("RESPONSE BODY: " + ex.getResponseBodyAsString());
+
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "OIC_ERROR",
+                    ex.getResponseBodyAsString()); // ✅ return real error
 
         } catch (Exception ex) {
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "OIC_ERROR",
-                    "Registration failed");
+            System.err.println("=== OIC UNKNOWN ERROR ===");
+            ex.printStackTrace();
+
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "OIC_ERROR",
+                    ex.getMessage());
         }
     }
 }
