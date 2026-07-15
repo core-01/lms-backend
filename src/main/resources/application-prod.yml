@@ -8,7 +8,7 @@ spring:
             client-secret: ${OIC_CLIENT_SECRET}
             authorization-grant-type: client_credentials
             client-authentication-method: client_secret_post
-            scope: https://dev-oic-axv6tfhynrdg-hy.integration.ap-hyderabad-1.ocp.oraclecloud.com:443urn:opc:resource:consumer::all
+            scope: https://CD4344723DCA4850AF332E9124F3C190.integration.ap-hyderabad-1.ocp.oraclecloud.com:443/ic/api/
         provider:
           oic:
             token-uri: ${OIC_TOKEN_ENDPOINT}
